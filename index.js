@@ -17,7 +17,7 @@ const COLORS = {
 
 const spacer = (x) => (x > 0 ? [...new Array(x)].map(() => ' ').join('') : '');
 
-const colorText = (color, string) => `\u001b[${color}m${string}\u001b[${COLORS.clear}m`;
+const colorText = (color, string) => `${string}`;
 
 function colorMethod(method) {
   switch (method) {
@@ -78,8 +78,8 @@ function getStacks(app) {
 module.exports = function expressListRoutes(app, opts) {
   const stacks = getStacks(app);
   const options = { ...defaultOptions, ...opts };
-  const routes = [];
 
+  const routes = []
   if (stacks) {
     for (const stack of stacks) {
       if (stack.route) {
@@ -88,17 +88,20 @@ module.exports = function expressListRoutes(app, opts) {
           const method = route.method ? route.method.toUpperCase() : null;
           if (!routeLogged[method] && method) {
             const stackMethod = colorMethod(method);
-            const stackSpace = spacer(options.spacer - method.length);
             const stackPath = path.resolve(
-              [options.prefix, stack.routerPath, stack.route.path, route.path].filter((s) => !!s).join(''),
+              [options.prefix, stack.routerPath, stack.route.path, route.path].filter((s) => !!s).join('')
             );
-            // console.info(stackMethod, stackSpace, stackPath, stackSpace, stack.route.path);
+            // console.log(stack.routerPath.replace(/\//g,''))
+            // console.log(stack.routerPath.replace(/\//g,''), stack.route.path.replace(/\//g,''))
+            // console.log({method: stackMethod, controller: stack.routerPath.replace(/\//g,''), route: stack.route.path.replace(/\//g,'')})
+            // console.log({stackMethod, controller: stack.routerPath.replace(/\//g,''), route: stackPath.slice(3) });
+            console.log('stack.routerPath ', stack?.routerPath)
+            routes.push({method: stackMethod, controller: stack?.routerPath?.replace(/\//g,''), route: stack.route.path.replace(/\//g,'')})
             routeLogged[method] = true;
           }
         }
-        routes.push(stack.route.path.slice(1))
       }
     }
+    return routes
   }
-  return routes;
 };
