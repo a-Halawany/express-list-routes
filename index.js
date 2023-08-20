@@ -17,9 +17,9 @@ const COLORS = {
 
 const spacer = (x) => (x > 0 ? [...new Array(x)].map(() => ' ').join('') : '');
 
-const colorText = (color, string) => `${string}`;
+const colorText = (color, string) => `${ string }`;
 
-function colorMethod(method) {
+function colorMethod (method) {
   switch (method) {
     case 'POST':
       return colorText(COLORS.yellow, method);
@@ -36,11 +36,11 @@ function colorMethod(method) {
   }
 }
 
-function getPathFromRegex(regexp) {
+function getPathFromRegex (regexp) {
   return regexp.toString().replace('/^', '').replace('?(?=\\/|$)/i', '').replace(/\\\//g, '/');
 }
 
-function combineStacks(acc, stack) {
+function combineStacks (acc, stack) {
   if (stack.handle.stack) {
     const routerPath = getPathFromRegex(stack.regexp);
     return [...acc, ...stack.handle.stack.map((stack) => ({ routerPath, ...stack }))];
@@ -48,7 +48,7 @@ function combineStacks(acc, stack) {
   return [...acc, stack];
 }
 
-function getStacks(app) {
+function getStacks (app) {
   // Express 3
   if (app.routes) {
     // convert to express 4
@@ -75,7 +75,7 @@ function getStacks(app) {
   return [];
 }
 
-module.exports = function expressListRoutes(app, opts) {
+module.exports = function expressListRoutes (app, opts) {
   const stacks = getStacks(app);
   const options = { ...defaultOptions, ...opts };
 
@@ -91,17 +91,20 @@ module.exports = function expressListRoutes(app, opts) {
             const stackPath = path.resolve(
               [options.prefix, stack.routerPath, stack.route.path, route.path].filter((s) => !!s).join('')
             );
-            // console.log(stack.routerPath.replace(/\//g,''))
-            // console.log(stack.routerPath.replace(/\//g,''), stack.route.path.replace(/\//g,''))
-            // console.log({method: stackMethod, controller: stack.routerPath.replace(/\//g,''), route: stack.route.path.replace(/\//g,'')})
-            // console.log({stackMethod, controller: stack.routerPath.replace(/\//g,''), route: stackPath.slice(3) });
-            console.log('stack.routerPath ', stack?.routerPath)
+            // console.log(stack.routerPath.replace(/\//g, ''))
+            // console.log(stack.routerPath.replace(/\//g, ''), stack.route.path.replace(/\//g, ''))
+            // console.log({ method: stackMethod, controller: stack.routerPath.replace(/\//g, ''), route: stack.route.path.replace(/\//g, '') })
+            // console.log({ stackMethod, controller: stack.routerPath.replace(/\//g, ''), route: stackPath.slice(3) });
+            console.log({
+              method: stackMethod,
+              api: '/' + stackPath.slice(3).replace(/\\/g, '/'),
+              permissions: ["64db8b814d200166fdde72f5"]
+            })
             routes.push({
-                method: stackMethod,
-                controller: stack?.routerPath?.replace(/\//g,''),
-                route: stack.route.path.split('/')[1],
-                subRoute: stack.route.path.split('/')[2]
-              })
+              method: stackMethod,
+              api: '/' + stackPath.slice(3).replace(/\\/g, '/'),
+              permissions: ["64db8b814d200166fdde72f5"]
+            })
             routeLogged[method] = true;
           }
         }
