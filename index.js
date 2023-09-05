@@ -95,15 +95,10 @@ module.exports = function expressListRoutes (app, opts) {
             // console.log(stack.routerPath.replace(/\//g, ''), stack.route.path.replace(/\//g, ''))
             // console.log({ method: stackMethod, controller: stack.routerPath.replace(/\//g, ''), route: stack.route.path.replace(/\//g, '') })
             // console.log({ stackMethod, controller: stack.routerPath.replace(/\//g, ''), route: stackPath.slice(3) });
-            console.log({
-              method: stackMethod,
-              api: '/' + stackPath.slice(3).replace(/\\/g, '/'),
-              permissions: ["64db8b814d200166fdde72f5"]
-            })
             routes.push({
               method: stackMethod,
               api: '/' + stackPath.slice(3).replace(/\\/g, '/'),
-              permissions: ["64db8b814d200166fdde72f5"]
+              roles: ["64db8b814d200166fdde72f5"]
             })
             routeLogged[method] = true;
           }
