@@ -98,7 +98,7 @@ module.exports = function expressListRoutes (app, opts) {
             routes.push({
               method: stackMethod,
               api: '/' + stackPath.slice(3).replace(/\\/g, '/'),
-              roles: ["64db8b814d200166fdde72f5"]
+              name: "no name"
             })
             routeLogged[method] = true;
           }
